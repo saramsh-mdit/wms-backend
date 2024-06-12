@@ -16,3 +16,16 @@ export async function getDB() {
   const connection = await getConnection();
   return drizzle(connection, { schema: AllSchemas, mode: "default" });
 }
+
+export const poolConnection = mysql.createPool({
+  host: "localhost",
+  user: "admin",
+  password: "admin",
+  database: "weapon",
+  port: 3306,
+});
+
+export const db = drizzle(poolConnection, {
+  schema: AllSchemas,
+  mode: "default",
+});

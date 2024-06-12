@@ -1,8 +1,6 @@
-import * as userSchemas from "./schema/users";
+import * as userSchemas from "./schema/schema";
 
 const AllSchemas = {
-    ...userSchemas
+  ...userSchemas,
 };
-export default AllSchemas
-    
-
+export default AllSchemas;

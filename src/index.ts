@@ -1,16 +1,7 @@
 import "dotenv/config";
 import express, { NextFunction, Request, Response } from "express";
-import { getDB } from "./db/database";
+import { JsonWebTokenError } from "jsonwebtoken";
 import { router } from "./router";
-
-getDB()
-  .then(() => {
-    console.log(`database connected`);
-  })
-  .catch((err) => {
-    if (err instanceof Error) console.log(err.message);
-    else console.log(err);
-  });
 
 const app = express();
 
@@ -23,7 +14,9 @@ app.use(express.json());
 app.use(router);
 
 app.use((err: any, req: Request, res: Response, next: NextFunction) => {
-  // console.error(err.stack);
-  // console.log(err.message);
-  res.status(500).send("Something went wrong!");
+  if (err instanceof JsonWebTokenError) {
+    res.status(400).send(err.message);
+  } else {
+    res.status(500).send(err.length > 30 ? "Something went wrong" : err);
+  }
 });

@@ -1,25 +1,29 @@
 {
   "name": "mws-backend",
   "version": "1.0.0",
+  "author": "",
+  "license": "ISC",
   "description": "",
   "main": "index.js",
   "scripts": {
     "build": "tsc",
     "dev": "tsx watch ./src/index.ts",
-    "migration": "tsx ./migration.ts",
+    "migration_run": "tsx ./migration.ts",
+    "migration_generate": "drizzle-kit generate --config=drizzle.config.ts",
+    "studio": "drizzle-kit studio",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
   "dependencies": {
     "argon2": "^0.40.3",
     "dotenv": "^16.4.5",
     "drizzle-orm": "^0.31.2",
+    "express": "^4.19.2",
     "jsonwebtoken": "^9.0.2",
     "mysql2": "^3.10.0"
   },
   "devDependencies": {
+    "@types/express": "^4.17.21",
+    "@types/jsonwebtoken": "^9.0.6",
     "@types/node": "^20.14.2",
     "drizzle-kit": "^0.22.7",
     "tsx": "^4.15.2",

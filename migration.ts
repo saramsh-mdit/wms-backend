@@ -1,6 +1,6 @@
 import "dotenv/config";
 import { migrate } from "drizzle-orm/mysql2/migrator";
-import { getDB, getConnection } from "./src/db/database";
+import { getConnection, getDB } from "./src/db/database";
 
 async function migration() {
   const db = await getDB();
@@ -10,6 +10,7 @@ async function migration() {
   // Don't forget to close the connection, otherwise the script will hang
   const connection = await getConnection();
   await connection.end();
+  process.exit(0);
 }
 
 migration();
