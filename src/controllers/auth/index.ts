@@ -39,7 +39,7 @@ authController.post("/users/login", async (req, res) => {
       { expiresIn: "24h" }
     );
     res.cookie("cookie", token);
-    res.send("login sucessfull");
+    res.send({ token, msg: "login successful" });
   } catch (error) {
     res.send(error);
   }
@@ -86,7 +86,7 @@ authController.post("/admin/login", async (req, res) => {
       { expiresIn: "24h" }
     );
     res.cookie("cookie", token);
-    res.send("login sucessfull");
+    res.send({ token, msg: "login successful", isAdmin: true });
   } catch (error) {
     console.log(error);
   }

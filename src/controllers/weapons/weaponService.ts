@@ -66,7 +66,6 @@ export async function update_weapon(
 ) {
   try {
     const db_weapon = await find_weapon_by_id(weapon_id);
-    console.log("database weapon", db_weapon);
     await db
       .update(weapons)
       .set({

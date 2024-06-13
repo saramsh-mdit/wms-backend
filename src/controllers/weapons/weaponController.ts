@@ -58,7 +58,6 @@ weaponController.post("/weapons", upload.single("image"), async (req, res) => {
       description: string;
       weapon_type_id: string;
     } = req.body;
-    console.log(req.body);
     const weapon_data = {
       name,
       image,

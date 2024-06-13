@@ -3,4 +3,5 @@ build
 
 pnpm-lock.yaml
 .vscode
+images/*
 images
