@@ -17,11 +17,11 @@ app.use(
   })
 );
 
-app.use(router);
-
 app.use(express.urlencoded({ extended: true }));
 
 app.use(express.json());
+
+app.use(router);
 
 const imgPath = path.join(process.cwd(), "images");
 app.use(express.static(imgPath));

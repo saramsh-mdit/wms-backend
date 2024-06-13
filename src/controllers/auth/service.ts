@@ -70,3 +70,12 @@ export async function find_admin_by_email(email: string) {
     throw error;
   }
 }
+
+// get user
+export async function find_user_by_id(id: string) {
+  try {
+    return await db.select().from(users).where(eq(users.user_id, id));
+  } catch (error) {
+    throw error;
+  }
+}
