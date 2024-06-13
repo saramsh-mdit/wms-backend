@@ -32,6 +32,7 @@ weaponTypeController.get("/weapon-types/:id", async (req, res) => {
 weaponTypeController.post("/weapon-types", async (req, res) => {
   try {
     const { name }: { name: string } = req.body;
+    console.log(name);
     await add_weapon_type(name);
     res.send("new weapon type added");
   } catch (err) {
