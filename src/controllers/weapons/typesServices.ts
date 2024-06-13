@@ -1,6 +1,6 @@
 import { eq } from "drizzle-orm";
 import { db } from "../../db/database";
-import { weapon_types } from "../../db/schema/schema";
+import { weapon_types, weapons } from "../../db/schema/schema";
 
 export async function get_weapon_types() {
   try {
@@ -50,6 +50,19 @@ export async function update_weapon_type(wtype_id: string, name: string) {
         name: name ?? db_wtype[0].name,
       })
       .where(eq(weapon_types.wtype_id, wtype_id));
+  } catch (err) {
+    throw err;
+  }
+}
+
+// -- unused --  all weapons of a particular weapon type
+export async function weapons_type_all(id: string) {
+  try {
+    return await db
+      .select()
+      .from(weapon_types)
+      .where(eq(weapon_types.wtype_id, id))
+      .innerJoin(weapons, eq(weapon_types.wtype_id, weapons.wtype_id_fk));
   } catch (err) {
     throw err;
   }
