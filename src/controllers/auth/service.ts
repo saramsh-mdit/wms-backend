@@ -71,6 +71,15 @@ export async function find_admin_by_email(email: string) {
   }
 }
 
+// get admin by their admin_id
+export async function find_admin_by_id(id: string) {
+  try {
+    return await db.select().from(admin).where(eq(admin.admin_id, id));
+  } catch (error) {
+    throw error;
+  }
+}
+
 // get user
 export async function find_user_by_id(id: string) {
   try {

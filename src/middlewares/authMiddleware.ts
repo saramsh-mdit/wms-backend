@@ -16,7 +16,8 @@ export async function authMiddleware(
     const decoded: any = jsonwebtoken.verify(token, process.env.JWT_SECRETKEY!);
     if (!decoded) throw "please authenticate again";
     if (decoded.exp < Date.now() / 1000) throw "please authenticate again";
-    res.locals.user_id = decoded.data;
+    res.locals.user_id = decoded.id;
+    res.locals.isAdmin = decoded.isAdmin;
     next();
   } catch (error) {
     next(error);

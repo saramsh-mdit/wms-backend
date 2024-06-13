@@ -5,6 +5,7 @@ import { verify_password } from "../../utils/password_hashing";
 import {
   admin_register,
   find_admin_by_email,
+  find_admin_by_id,
   find_user_by_email,
   find_user_by_id,
   user_delete,
@@ -33,7 +34,8 @@ authController.post("/users/login", async (req, res) => {
       throw "invalid password";
     const token = jsonwebtoken.sign(
       {
-        data: user_query[0].user_id,
+        id: user_query[0].user_id,
+        isAdmin: false,
       },
       process.env.JWT_SECRETKEY! ?? "bdhsfj&6663!@sd",
       { expiresIn: "24h" }
@@ -79,6 +81,7 @@ authController.post("/admin/login", async (req, res) => {
       {
         id: admin_query[0].admin_id,
         email: admin_query[0].email,
+        isAdmin: true,
       },
       process.env.JWT_SECRETKEY! ?? "bdhsfj&6663!@sd",
       { expiresIn: "24h" }
@@ -90,13 +93,15 @@ authController.post("/admin/login", async (req, res) => {
   }
 });
 
-authController.get("/user", authMiddleware, async (_, res) => {
+authController.get("/info", authMiddleware, async (_, res) => {
   try {
     const user_id = res.locals.user_id;
-    const user = await find_user_by_id(user_id);
+    const user = res.locals.isAdmin
+      ? await find_admin_by_id(user_id)
+      : await find_user_by_id(user_id);
     if (user.length)
       return res.send({
-        isAdmin: false,
+        isAdmin: res.locals.isAdmin,
         email: user[0].email,
         name: user[0].name,
       });
