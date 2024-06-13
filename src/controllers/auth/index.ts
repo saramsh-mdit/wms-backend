@@ -25,7 +25,6 @@ authController.post("/users/register", async (req, res) => {
 
 authController.post("/users/login", async (req, res) => {
   try {
-    console.log(req.body);
     const { email, password } = req.body;
     const user_query = await find_user_by_email(email);
     if (user_query.length == 0) throw "no user found";
