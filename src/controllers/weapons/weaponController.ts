@@ -29,7 +29,7 @@ weaponController.get("/weapons", async (req, res) => {
     const weapons = await get_weapons();
     res.send(weapons);
   } catch (err) {
-    res.send(err);
+    res.status(400).send({ message: err });
   }
 });
 
@@ -39,7 +39,7 @@ weaponController.get("/weapons/:id", async (req, res) => {
     const weapon = await find_weapon_by_id(weapon_id);
     res.send(weapon);
   } catch (err) {
-    res.send(err);
+    res.status(400).send({ message: err });
   }
 });
 
@@ -66,9 +66,9 @@ weaponController.post("/weapons", upload.single("image"), async (req, res) => {
       weapon_type_id,
     };
     await add_weapon(weapon_data);
-    res.send("weapon added");
+    res.send({ message: "weapon added" });
   } catch (err) {
-    res.send(err);
+    res.status(400).send({ message: err });
   }
 });
 
@@ -76,9 +76,9 @@ weaponController.delete("/weapons/:id", async (req, res) => {
   try {
     const weapon_id = req.params.id as string;
     await delete_weapon(weapon_id);
-    res.send("weapon deleted");
+    res.send({ message: "weapon deleted" });
   } catch (err) {
-    res.send(err);
+    res.status(400).send({ message: err });
   }
 });
 
@@ -114,9 +114,9 @@ weaponController.patch(
         weapon_type_id,
       };
       await update_weapon(weapon_id, weapon);
-      res.send("weapon updated");
+      res.send({ message: "weapon updated" });
     } catch (err) {
-      res.send(err);
+      res.status(400).send({ message: err });
     }
   }
 );
