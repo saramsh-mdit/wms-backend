@@ -1,4 +1,4 @@
-import { sql } from "drizzle-orm";
+import { relations, sql } from "drizzle-orm";
 import {
   boolean,
   int,
@@ -79,22 +79,22 @@ export const inventory = mysqlTable("inventory", {
 //   }),
 // }));
 
-// // a single user can have many inventory weapons eg: user -> akm, beryl, m16
-// export const inventoryRelations = relations(inventory, ({ one }) => ({
-//   user: one(users, {
-//     fields: [inventory.user_id],
-//     references: [users.user_id],
-//   }),
-//   weapon: one(weapons, {
-//     fields: [inventory.weapon_id],
-//     references: [weapons.weapon_id],
-//   }),
-// }));
+// a single user can have many inventory weapons eg: user -> akm, beryl, m16
+export const inventoryRelations = relations(inventory, ({ one }) => ({
+  user: one(users, {
+    fields: [inventory.user_id],
+    references: [users.user_id],
+  }),
+  weapon: one(weapons, {
+    fields: [inventory.weapon_id],
+    references: [weapons.weapon_id],
+  }),
+}));
 
-// export const userRelations = relations(users, ({ many }) => ({
-//   inventory: many(inventory),
-// }));
+export const userRelations = relations(users, ({ many }) => ({
+  inventory: many(inventory),
+}));
 
-// export const IweaponRelations = relations(weapons, ({ many }) => ({
-//   inventory: many(inventory),
-// }));
+export const IweaponRelations = relations(weapons, ({ many }) => ({
+  inventory: many(inventory),
+}));
