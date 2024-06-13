@@ -21,7 +21,7 @@ weaponTypeController.get("/weapon-types", async (req, res) => {
 
 weaponTypeController.get("/weapon-types/:id", async (req, res) => {
   try {
-    const wtype_id = req.query.id as string;
+    const wtype_id = req.params.id as string;
     const type = await find_wtype_by_id(wtype_id);
     res.send(type);
   } catch (err) {
@@ -41,7 +41,7 @@ weaponTypeController.post("/weapon-types", async (req, res) => {
 
 weaponTypeController.patch("/weapon-types/:id", async (req, res) => {
   try {
-    const wtype_id = req.query.id as string;
+    const wtype_id = req.params.id as string;
     const { name } = req.body;
     await update_weapon_type(wtype_id, name);
     res.send("weapon updated");
@@ -52,7 +52,7 @@ weaponTypeController.patch("/weapon-types/:id", async (req, res) => {
 
 weaponTypeController.delete("/weapon-types/:id", async (req, res) => {
   try {
-    const wtype_id = req.query.id as string;
+    const wtype_id = req.params.id as string;
     await delete_weapon_type(wtype_id);
     res.send("weapon type deleted");
   } catch (err) {

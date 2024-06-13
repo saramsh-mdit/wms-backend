@@ -1,4 +1,4 @@
-import { relations, sql } from "drizzle-orm";
+import { sql } from "drizzle-orm";
 import {
   boolean,
   int,
@@ -15,18 +15,18 @@ export const users = mysqlTable("users", {
   user_id: varchar("id", { length: 36 })
     .default(sql`(uuid())`)
     .primaryKey(),
-  name: varchar("name", { length: 10 }),
-  email: varchar("email", { length: 20 }).unique().notNull(),
-  password: varchar("password", { length: 30 }).notNull(),
+  name: varchar("name", { length: 20 }).notNull(),
+  email: varchar("email", { length: 30 }).unique().notNull(),
+  password: varchar("password", { length: 200 }).notNull(),
 });
 
 export const admin = mysqlTable("admin", {
   admin_id: varchar("id", { length: 36 })
     .default(sql`(uuid())`)
     .primaryKey(),
-  name: varchar("name", { length: 10 }),
+  name: varchar("name", { length: 20 }),
   email: varchar("email", { length: 30 }).unique().notNull(),
-  password: varchar("password", { length: 30 }).notNull(),
+  password: varchar("password", { length: 200 }).notNull(),
 });
 
 export const weapon_types = mysqlTable("weapon_type", {
@@ -45,9 +45,9 @@ export const weapons = mysqlTable("weapon", {
   description: text("description").notNull(),
   image: text("image").notNull(),
   quantity: int("quantity").notNull(),
-  maintainable: boolean("maintainable").default(true),
+  maintainable: boolean("maintainable").default(false),
   created_date: timestamp("created_date").defaultNow(),
-  wtype_id_fk: varchar("weapon", { length: 36 })
+  wtype_id_fk: varchar("weapon_type", { length: 36 })
     .notNull()
     .references(() => weapon_types.wtype_id),
 });
@@ -68,33 +68,33 @@ export const inventory = mysqlTable("inventory", {
 // relations
 
 // a single weapon type can have many weapons eg: assult rifles -> akm, beryl, m416
-export const weapon_type_Relations = relations(weapon_types, ({ many }) => ({
-  weapons: many(weapons),
-}));
+// export const weapon_typeRelations = relations(weapon_types, ({ many }) => ({
+//   weapons: many(weapons),
+// }));
 
-export const weaponRelations = relations(weapons, ({ one }) => ({
-  wtype_id_fk: one(weapon_types, {
-    fields: [weapons.wtype_id_fk],
-    references: [weapon_types.wtype_id],
-  }),
-}));
+// export const weaponRelations = relations(weapons, ({ one }) => ({
+//   weapon_type: one(weapon_types, {
+//     fields: [weapons.wtype_id_fk],
+//     references: [weapon_types.wtype_id],
+//   }),
+// }));
 
-// a single user can have many inventory weapons eg: user -> akm, beryl, m16
-export const inventoryRelations = relations(inventory, ({ one }) => ({
-  user: one(users, {
-    fields: [inventory.user_id],
-    references: [users.user_id],
-  }),
-  weapon: one(weapons, {
-    fields: [inventory.weapon_id],
-    references: [weapons.weapon_id],
-  }),
-}));
+// // a single user can have many inventory weapons eg: user -> akm, beryl, m16
+// export const inventoryRelations = relations(inventory, ({ one }) => ({
+//   user: one(users, {
+//     fields: [inventory.user_id],
+//     references: [users.user_id],
+//   }),
+//   weapon: one(weapons, {
+//     fields: [inventory.weapon_id],
+//     references: [weapons.weapon_id],
+//   }),
+// }));
 
-export const userRelations = relations(users, ({ many }) => ({
-  inventory: many(inventory),
-}));
+// export const userRelations = relations(users, ({ many }) => ({
+//   inventory: many(inventory),
+// }));
 
-export const IweaponRelations = relations(weapons, ({ many }) => ({
-  inventory: many(inventory),
-}));
+// export const IweaponRelations = relations(weapons, ({ many }) => ({
+//   inventory: many(inventory),
+// }));

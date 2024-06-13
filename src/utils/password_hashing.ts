@@ -8,9 +8,9 @@ export async function hash_password(password: string) {
   }
 }
 
-export async function verify_password(password: string, hash: string) {
+export async function verify_password(hash: string, plain_password: string) {
   try {
-    return await argon2.verify(hash, password);
+    return await argon2.verify(hash, plain_password);
   } catch (err) {
     throw err;
   }

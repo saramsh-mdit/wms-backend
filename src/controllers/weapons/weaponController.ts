@@ -9,7 +9,18 @@ import {
   update_weapon,
 } from "./weaponService";
 
-const upload = multer({ dest: "images/" });
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "images");
+  },
+  filename: function (req, file, cb) {
+    const uniqueSuffix =
+      Date.now().toString().slice(0, 4) + Math.round(Math.random() * 100);
+    cb(null, uniqueSuffix + "-" + file.originalname);
+  },
+});
+
+const upload = multer({ storage: storage });
 
 export const weaponController = Router();
 
@@ -24,7 +35,7 @@ weaponController.get("/weapons", async (req, res) => {
 
 weaponController.get("/weapons/:id", async (req, res) => {
   try {
-    const weapon_id = req.query.id as string;
+    const weapon_id = req.params.id as string;
     const weapon = await find_weapon_by_id(weapon_id);
     res.send(weapon);
   } catch (err) {
@@ -34,6 +45,7 @@ weaponController.get("/weapons/:id", async (req, res) => {
 
 weaponController.post("/weapons", upload.single("image"), async (req, res) => {
   try {
+    if (!req.file?.filename) throw "no image";
     const image = req.file?.filename as string;
     const {
       name,
@@ -46,6 +58,7 @@ weaponController.post("/weapons", upload.single("image"), async (req, res) => {
       description: string;
       weapon_type_id: string;
     } = req.body;
+    console.log(req.body);
     const weapon_data = {
       name,
       image,
@@ -62,7 +75,7 @@ weaponController.post("/weapons", upload.single("image"), async (req, res) => {
 
 weaponController.delete("/weapons/:id", async (req, res) => {
   try {
-    const weapon_id = req.query.id as string;
+    const weapon_id = req.params.id as string;
     await delete_weapon(weapon_id);
     res.send("weapon deleted");
   } catch (err) {
@@ -75,7 +88,7 @@ weaponController.patch(
   upload.single("image"),
   async (req, res) => {
     try {
-      const weapon_id = req.query.id as string;
+      const weapon_id = req.params.id as string;
       let image: any;
       if (req.file?.filename) {
         image = req.file?.filename as string;
@@ -84,12 +97,23 @@ weaponController.patch(
         name,
         quantity,
         maintainable,
+        description,
+        weapon_type_id,
       }: {
         name: string;
         quantity: number;
         maintainable: boolean;
+        description: string;
+        weapon_type_id: string;
       } = req.body;
-      const weapon = { name, quantity, image, maintainable };
+      const weapon = {
+        name,
+        quantity,
+        image,
+        maintainable,
+        description,
+        weapon_type_id,
+      };
       await update_weapon(weapon_id, weapon);
       res.send("weapon updated");
     } catch (err) {
