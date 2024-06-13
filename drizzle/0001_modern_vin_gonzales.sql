@@ -1,0 +1,2 @@
+ALTER TABLE `weapon` MODIFY COLUMN `owner` varchar(36) NOT NULL DEFAULT (uuid());--> statement-breakpoint
+ALTER TABLE `weapon` ADD CONSTRAINT `weapon_owner_users_id_fk` FOREIGN KEY (`owner`) REFERENCES `users`(`id`) ON DELETE no action ON UPDATE no action;

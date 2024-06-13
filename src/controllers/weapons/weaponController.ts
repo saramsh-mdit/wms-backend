@@ -35,8 +35,24 @@ weaponController.get("/weapons/:id", async (req, res) => {
 weaponController.post("/weapons", upload.single("image"), async (req, res) => {
   try {
     const image = req.file?.filename as string;
-    const { name, quantity }: { name: string; quantity: string } = req.body;
-    const weapon_data = { name, image, quantity: parseInt(quantity) };
+    const {
+      name,
+      quantity,
+      description,
+      weapon_type_id,
+    }: {
+      name: string;
+      quantity: string;
+      description: string;
+      weapon_type_id: string;
+    } = req.body;
+    const weapon_data = {
+      name,
+      image,
+      quantity: parseInt(quantity),
+      description,
+      weapon_type_id,
+    };
     await add_weapon(weapon_data);
     res.send("weapon added");
   } catch (err) {

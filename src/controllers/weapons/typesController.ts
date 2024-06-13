@@ -7,6 +7,7 @@ import {
   update_weapon_type,
 } from "./typesServices";
 
+// todo : add adminMiddleware
 export const weaponTypeController = Router();
 
 weaponTypeController.get("/weapon-types", async (req, res) => {

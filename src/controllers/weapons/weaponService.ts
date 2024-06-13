@@ -25,12 +25,16 @@ export async function add_weapon(weapon_data: {
   name: string;
   image: string;
   quantity: number;
+  description: string;
+  weapon_type_id: string;
 }) {
   try {
     return await db?.insert(weapons).values({
       name: weapon_data.name,
+      description: weapon_data.description,
       image: weapon_data.image,
       quantity: weapon_data.quantity,
+      wtype_id_fk: weapon_data.weapon_type_id,
     });
   } catch (err) {
     throw err;

@@ -79,7 +79,8 @@ authController.post("/admin/login", async (req, res) => {
       throw "invalid password";
     const token = jsonwebtoken.sign(
       {
-        data: admin_query[0].admin_id,
+        id: admin_query[0].admin_id,
+        email: admin_query[0].email,
       },
       process.env.JWT_SECRETKEY! ?? "bdhsfj&6663!@sd",
       { expiresIn: "24h" }
