@@ -1,4 +1,4 @@
-import { sql } from "drizzle-orm";
+import { relations, sql } from "drizzle-orm";
 import {
   boolean,
   int,
@@ -91,10 +91,10 @@ export const inventory = mysqlTable("inventory", {
 //   }),
 // }));
 
-// export const userRelations = relations(users, ({ many }) => ({
-//   inventory: many(inventory),
-// }));
+export const userRelations = relations(users, ({ many }) => ({
+  inventory: many(inventory),
+}));
 
-// export const IweaponRelations = relations(weapons, ({ many }) => ({
-//   inventory: many(inventory),
-// }));
+export const IweaponRelations = relations(weapons, ({ many }) => ({
+  inventory: many(inventory),
+}));
