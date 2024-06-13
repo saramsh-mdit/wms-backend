@@ -1,3 +1,4 @@
+import cors from "cors";
 import "dotenv/config";
 import express, { NextFunction, Request, Response } from "express";
 import { JsonWebTokenError } from "jsonwebtoken";
@@ -9,6 +10,7 @@ app.listen(process.env.PORT ?? 4000, () => {
   console.log(`server running on port ${process.env.PORT}`);
 });
 
+app.use(cors());
 app.use(express.json());
 
 app.use(router);
