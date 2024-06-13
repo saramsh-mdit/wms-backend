@@ -79,7 +79,7 @@ export const inventory = mysqlTable("inventory", {
 //   }),
 // }));
 
-// // a single user can have many inventory weapons eg: user -> akm, beryl, m16
+// a single user can have many inventory weapons eg: user -> akm, beryl, m16
 // export const inventoryRelations = relations(inventory, ({ one }) => ({
 //   user: one(users, {
 //     fields: [inventory.user_id],
