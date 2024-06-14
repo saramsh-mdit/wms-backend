@@ -1,6 +1,6 @@
 import { and, eq } from "drizzle-orm";
 import { db } from "../../db/database";
-import { inventory, weapons } from "../../db/schema/schema";
+import { inventory, weapon_types, weapons } from "../../db/schema/schema";
 import { find_weapon_by_id } from "../weapons/weaponService";
 
 export async function buy_weapon(
@@ -47,6 +47,7 @@ export async function user_inventory(user_id: string) {
       .select()
       .from(inventory)
       .innerJoin(weapons, eq(inventory.weapon_id, weapons.weapon_id))
+      .innerJoin(weapon_types, eq(weapon_types.wtype_id, weapons.wtype_id_fk))
       .where(eq(inventory.user_id, user_id));
   } catch (err) {
     throw err;

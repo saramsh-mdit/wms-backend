@@ -1,6 +1,6 @@
 import { eq } from "drizzle-orm";
 import { db } from "../../db/database";
-import { weapons } from "../../db/schema/schema";
+import { inventory, weapons } from "../../db/schema/schema";
 
 export async function get_weapons() {
   try {
@@ -47,6 +47,16 @@ export async function add_weapon(weapon_data: {
 
 export async function delete_weapon(weapon_id: string) {
   try {
+    const inventory_items = await db.query.inventory.findMany({
+      where: eq(inventory.weapon_id, weapon_id),
+    });
+    if (inventory_items.length > 0) {
+      inventory_items.forEach(async (item) => {
+        await db
+          .delete(inventory)
+          .where(eq(inventory.inventory_id, item.inventory_id));
+      });
+    }
     return await db.delete(weapons).where(eq(weapons.weapon_id, weapon_id));
   } catch (err) {
     throw err;
